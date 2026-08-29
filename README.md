@@ -56,6 +56,10 @@ En [el siguiente link](https://code.visualstudio.com/docs/cpp/config-msvc#cpp-ar
 En [WINDOWS.md](WINDOWS.md) están las instrucciones para poder compilar el proyecto en VSCode, centrado en Windows
 pero muchos de los pasos deberían funcionar también en otras plataformas.
 
+## Instalación recomendada en macOS con Visual Studio Code
+
+En [MACOS.md](MACOS.md) están las instrucciones para poder compilar el proyecto en VSCode para macOS.
+
 ### Alternativas
 
 #### Compilación con CMake

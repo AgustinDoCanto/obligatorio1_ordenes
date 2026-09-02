@@ -163,21 +163,21 @@ TEST_CASE("PruebaSuma cases", "[PruebaSuma][file:comienzo]")
     SECTION("-8 + 6 = -2") { checkSuma(-8, 6, -2); }
 }
 
-TEST_CASE("PruebaImprimirTabla cases", "[PruebaImprimirTabla][file:comienzo]")
+TEST_CASE("PruebaTablaDel cases", "[PruebaTablaDel][file:comienzo]")
 {
-    auto checkImprimirTabla = [](unsigned int tablaDelN, unsigned int desde, unsigned int hasta, const std::string &expected)
+    auto checkTablaDel = [](unsigned int tablaDelN, unsigned int desde, unsigned int hasta, const std::string &expected)
     { checkSalida([=]
                   { tablaDel(tablaDelN, desde, hasta); }, expected); };
 
     SECTION("7,0,6")
     {
-        checkImprimirTabla(7, 0, 6, "0*7=0;1*7=7;2*7=14;3*7=21;4*7=28;5*7=35;6*7=42");
+        checkTablaDel(7, 0, 6, "0*7=0;1*7=7;2*7=14;3*7=21;4*7=28;5*7=35;6*7=42");
     }
-    SECTION("11,1,5") { checkImprimirTabla(11, 1, 5, "1*11=11;2*11=22;3*11=33;4*11=44;5*11=55"); }
-    SECTION("0,0,0") { checkImprimirTabla(0, 0, 0, "0*0=0"); }
-    SECTION("12,10,15") { checkImprimirTabla(12, 10, 15, "10*12=120;11*12=132;12*12=144;13*12=156;14*12=168;15*12=180"); }
-    SECTION("5,9,9") { checkImprimirTabla(5, 9, 9, "9*5=45"); }
-    SECTION("10,0,1") { checkImprimirTabla(10, 0, 1, "0*10=0;1*10=10"); }
+    SECTION("11,1,5") { checkTablaDel(11, 1, 5, "1*11=11;2*11=22;3*11=33;4*11=44;5*11=55"); }
+    SECTION("0,0,0") { checkTablaDel(0, 0, 0, "0*0=0"); }
+    SECTION("12,10,15") { checkTablaDel(12, 10, 15, "10*12=120;11*12=132;12*12=144;13*12=156;14*12=168;15*12=180"); }
+    SECTION("5,9,9") { checkTablaDel(5, 9, 9, "9*5=45"); }
+    SECTION("10,0,1") { checkTablaDel(10, 0, 1, "0*10=0;1*10=10"); }
 }
 
 TEST_CASE("PruebaSimplificar cases", "[PruebaSimplificar][file:comienzo]")

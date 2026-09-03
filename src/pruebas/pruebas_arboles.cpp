@@ -98,129 +98,6 @@ void checkArbolesIguales(Nodo *resultado, Nodo *esperado, const char *esperadoTe
         SECTION("several") { checkMemoriaArbol<tipo>(funcion, varios); }    \
     }
 
-MEMORY_CASES(NodoAB, "PruebaAltura", [](NodoAB *arbol) { (void)altura(arbol); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaExisteCaminoConSuma", [](NodoAB *arbol) { (void)existeCaminoConSuma(arbol, 4); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaEsArbolBalanceado", [](NodoAB *arbol) { (void)esArbolBalanceado(arbol); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaCantNodosEntreNiveles", [](NodoAB *arbol) { (void)cantNodosEntreNiveles(arbol, 1, 3); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaSumaABB", [](NodoAB *arbol) { (void)sumaABB(arbol, 4); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaSucesorABB", [](NodoAB *arbol) { (void)sucesor(arbol, 1); }, "{}", "{1}", "{1,2,3,4,5}")
-MEMORY_CASES(NodoAB, "PruebaNivelMasNodos", [](NodoAB *arbol) { (void)nivelMasNodos(arbol, 3); }, "{}", "{1}", "{1,2,3,4,5}")
-
-MEMORY_CASES(NodoAG, "PruebaAlturaAG", [](NodoAG *arbol) { (void)alturaAG(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
-MEMORY_CASES(NodoAG, "PruebaSumaPorNiveles", [](NodoAG *arbol) { (void)sumaPorNiveles(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
-MEMORY_CASES(NodoAG, "PruebaNivelConMasNodosAG", [](NodoAG *arbol) { (void)nivelConMasNodosAG(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
-
-TEST_CASE("PruebaSonIguales memory cases", "[PruebaSonIguales][memory][file:arboles]")
-{
-    auto check = [](const char *inputA, const char *inputB)
-    { checkMemoriaDosArboles<NodoAB>([](NodoAB *a, NodoAB *b) { (void)sonIguales(a, b); }, inputA, inputB); };
-    SECTION("empty") { check("{}", "{}"); }
-    SECTION("equal") { check("{1,2,3}", "{1,2,3}"); }
-    SECTION("different") { check("{1,2,3}", "{1,3,2}"); }
-}
-
-TEST_CASE("PruebaEnNivel memory cases", "[PruebaEnNivel][memory][file:arboles]")
-{
-    SECTION("empty")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return enNivel(a, 1); }, "{}");
-    }
-    SECTION("root")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return enNivel(a, 1); }, "{1,2,3}");
-    }
-    SECTION("deep")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return enNivel(a, 3); }, "{1,2,3,4,5,6,7}");
-    }
-}
-
-TEST_CASE("PruebaCamino memory cases", "[PruebaCamino][memory][file:arboles]")
-{
-    SECTION("empty")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return camino(a, 1); }, "{}");
-    }
-    SECTION("root")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return camino(a, 1); }, "{1}");
-    }
-    SECTION("deep")
-    {
-        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
-                                 { return camino(a, 5); }, "{1,2,3,4,5}");
-    }
-}
-
-TEST_CASE("PruebaInvertirHastak memory cases", "[PruebaInvertirHastak][memory][file:arboles]")
-{
-    auto check = [](const char *input, int k)
-    { checkMemoriaArbol<NodoAB>([=](NodoAB *a)
-                          { NodoAB *resultado = invertirHastak(a, k); FrameworkA1::destruir(resultado); }, input); };
-    SECTION("empty") { check("{}", 3); }
-    SECTION("zero") { check("{1,2,3}", 0); }
-    SECTION("several levels") { check("{1,2,3,4,5,6,7}", 3); }
-}
-
-TEST_CASE("PruebaBorrarNodoRaiz memory cases", "[PruebaBorrarNodoRaiz][memory][file:arboles]")
-{
-    SECTION("leaf")
-    {
-        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
-                            { borrarNodoRaiz(a); }, "{1}");
-    }
-    SECTION("one child")
-    {
-        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
-                            { borrarNodoRaiz(a); }, "{1,#,2}");
-    }
-    SECTION("two children")
-    {
-        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
-                            { borrarNodoRaiz(a); }, "{3,2,6}");
-    }
-}
-
-TEST_CASE("PruebaEsPrefijo memory cases", "[PruebaEsPrefijo][memory][file:arboles]")
-{
-    auto check = [](const char *inputTree, const char *inputList)
-    {
-        int largoLista;
-        NodoLista *lista = (NodoLista *)FrameworkA1::parsearColeccion(inputList, largoLista);
-        checkMemoriaArbol<NodoAG>([&](NodoAG *a)
-                            { (void)esPrefijo(a, lista); }, inputTree);
-        FrameworkA1::destruir(lista);
-    };
-    SECTION("empty path") { check("{{1}}", "()"); }
-    SECTION("prefix") { check("{{1,2,3,#,4}}", "(1,2,4)"); }
-    SECTION("not prefix") { check("{{1,2,3,#,4}}", "(1,4)"); }
-}
-
-TEST_CASE("PruebaCaminoAG memory cases", "[PruebaCaminoAG][memory][file:arboles]")
-{
-    SECTION("empty")
-    {
-        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
-                                 { return caminoAG(a, 1); }, "{{}}");
-    }
-    SECTION("root")
-    {
-        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
-                                 { return caminoAG(a, 1); }, "{{1}}");
-    }
-    SECTION("deep")
-    {
-        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
-                                 { return caminoAG(a, 4); }, "{{1,2,3,#,4}}");
-    }
-}
-
-#undef MEMORY_CASES
 
 TEST_CASE("PruebaAltura cases", "[PruebaAltura][file:arboles]")
 {
@@ -239,6 +116,8 @@ TEST_CASE("PruebaAltura cases", "[PruebaAltura][file:arboles]")
     SECTION("{1,3,#,1}") { check("{1,3,#,1}", 3); }
 }
 
+MEMORY_CASES(NodoAB, "PruebaAltura", [](NodoAB *arbol) { (void)altura(arbol); }, "{}", "{1}", "{1,2,3,4,5}")
+
 TEST_CASE("PruebaSonIguales cases", "[PruebaSonIguales][file:arboles]")
 {
     auto check = [](const char *inputA, const char *inputB, bool expected)
@@ -254,6 +133,15 @@ TEST_CASE("PruebaSonIguales cases", "[PruebaSonIguales][file:arboles]")
     SECTION("value-diff") { check("{1,1,#,5,7,1,5,6,1}", "{1,1,#,5,7,1,5,6,2}", false); }
     SECTION("repeated-shape") { check("{1,#,2,1,1,1,1}", "{1,#,2,1,1,1,1}", true); }
     SECTION("different-null-placement") { check("{1,#,2,1,1,1,1}", "{1,2,#,1,1,1,1}", false); }
+}
+
+TEST_CASE("PruebaSonIguales memory cases", "[PruebaSonIguales][memory][file:arboles]")
+{
+    auto check = [](const char *inputA, const char *inputB)
+    { checkMemoriaDosArboles<NodoAB>([](NodoAB *a, NodoAB *b) { (void)sonIguales(a, b); }, inputA, inputB); };
+    SECTION("empty") { check("{}", "{}"); }
+    SECTION("equal") { check("{1,2,3}", "{1,2,3}"); }
+    SECTION("different") { check("{1,2,3}", "{1,3,2}"); }
 }
 
 TEST_CASE("PruebaExisteCaminoConSuma cases", "[PruebaExisteCaminoConSuma][file:arboles]")
@@ -275,6 +163,8 @@ TEST_CASE("PruebaExisteCaminoConSuma cases", "[PruebaExisteCaminoConSuma][file:a
     SECTION("negative-true") { check("{-1,1,#,5,7,1,5,6,2}", 10, true); }
     SECTION("negative-zero-true") { check("{-7,1,#,5,7,1,5,6,2}", 0, true); }
 }
+
+MEMORY_CASES(NodoAB, "PruebaExisteCaminoConSuma", [](NodoAB *arbol) { (void)existeCaminoConSuma(arbol, 4); }, "{}", "{1}", "{1,2,3,4,5}")
 
 TEST_CASE("PruebaEsArbolBalanceado cases", "[PruebaEsArbolBalanceado][file:arboles]")
 {
@@ -298,6 +188,8 @@ TEST_CASE("PruebaEsArbolBalanceado cases", "[PruebaEsArbolBalanceado][file:arbol
     SECTION("{1,2,3,4,#,5}") { check("{1,2,3,4,#,5}", true); }
 }
 
+MEMORY_CASES(NodoAB, "PruebaEsArbolBalanceado", [](NodoAB *arbol) { (void)esArbolBalanceado(arbol); }, "{}", "{1}", "{1,2,3,4,5}")
+
 TEST_CASE("PruebaEnNivel cases", "[PruebaEnNivel][file:arboles]")
 {
     auto check = [](const char *inputTree, int nivel, const char *expected)
@@ -315,6 +207,25 @@ TEST_CASE("PruebaEnNivel cases", "[PruebaEnNivel][file:arboles]")
     SECTION("big-tree level 4") { check("{1,2,3,4,#,5,6,#,7,8,9,#,10,#,#,11,#,#,#,12,13,#,#,14,#,#,15}", 4, "(7,8,9,10)"); }
     SECTION("big-tree level 5") { check("{1,2,3,4,#,5,6,#,7,8,9,#,10,#,#,11,#,#,#,12,13,#,#,14,#,#,15}", 5, "(11,12,13)"); }
     SECTION("big-tree level 6") { check("{1,2,3,4,#,5,6,#,7,8,9,#,10,#,#,11,#,#,#,12,13,#,#,14,#,#,15}", 6, "(14,15)"); }
+}
+
+TEST_CASE("PruebaEnNivel memory cases", "[PruebaEnNivel][memory][file:arboles]")
+{
+    SECTION("empty")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return enNivel(a, 1); }, "{}");
+    }
+    SECTION("root")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return enNivel(a, 1); }, "{1,2,3}");
+    }
+    SECTION("deep")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return enNivel(a, 3); }, "{1,2,3,4,5,6,7}");
+    }
 }
 
 TEST_CASE("PruebaCantNodosEntreNiveles cases", "[PruebaCantNodosEntreNiveles][file:arboles]")
@@ -335,6 +246,8 @@ TEST_CASE("PruebaCantNodosEntreNiveles cases", "[PruebaCantNodosEntreNiveles][fi
     SECTION("{1,2,3,4,#,#,#,5},3,3") { check("{1,2,3,4,#,#,#,5}", 3, 3, 1); }
 }
 
+MEMORY_CASES(NodoAB, "PruebaCantNodosEntreNiveles", [](NodoAB *arbol) { (void)cantNodosEntreNiveles(arbol, 1, 3); }, "{}", "{1}", "{1,2,3,4,5}")
+
 TEST_CASE("PruebaCamino cases", "[PruebaCamino][file:arboles]")
 {
     auto check = [](const char *inputTree, int dato, const char *expected)
@@ -351,6 +264,25 @@ TEST_CASE("PruebaCamino cases", "[PruebaCamino][file:arboles]")
     SECTION("deep") { check("{120,53,180,33,88,150,300,15,#,66,100,#,#,#,#,#,18,#,#,#,#,#,31}", 18, "(120, 53, 33, 15, 18)"); }
     SECTION("deep-right") { check("{10,5,13,#,6,#,15,#,9,#,30,7}", 7, "(10, 5, 6, 9, 7)"); }
     SECTION("small-right") { check("{0,-5,8,-10,-4,5,1000000}", 5, "(0, 8, 5)"); }
+}
+
+TEST_CASE("PruebaCamino memory cases", "[PruebaCamino][memory][file:arboles]")
+{
+    SECTION("empty")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return camino(a, 1); }, "{}");
+    }
+    SECTION("root")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return camino(a, 1); }, "{1}");
+    }
+    SECTION("deep")
+    {
+        checkMemoriaArbolLista<NodoAB>([](NodoAB *a)
+                                 { return camino(a, 5); }, "{1,2,3,4,5}");
+    }
 }
 
 TEST_CASE("PruebaInvertirHastak cases", "[PruebaInvertirHastak][file:arboles]")
@@ -380,6 +312,16 @@ TEST_CASE("PruebaInvertirHastak cases", "[PruebaInvertirHastak][file:arboles]")
     SECTION("skewed-3") { check("{1,2,3,#,4,5,6,#,#,#,#,7,8,#,#,#,9}", 3, "{1,3,2,6,5,4}"); }
     SECTION("skewed-4") { check("{1,2,3,#,4,5,6,#,#,#,#,7,8,#,#,#,9}", 4, "{1,3,2,6,5,4,#,8,7}"); }
     SECTION("skewed-5") { check("{1,2,3,#,4,5,6,#,#,#,#,7,8,#,#,#,9}", 5, "{1,3,2,6,5,4,#,8,7,#,#,#,#,9}"); }
+}
+
+TEST_CASE("PruebaInvertirHastak memory cases", "[PruebaInvertirHastak][memory][file:arboles]")
+{
+    auto check = [](const char *input, int k)
+    { checkMemoriaArbol<NodoAB>([=](NodoAB *a)
+                          { NodoAB *resultado = invertirHastak(a, k); FrameworkA1::destruir(resultado); }, input); };
+    SECTION("empty") { check("{}", 3); }
+    SECTION("zero") { check("{1,2,3}", 0); }
+    SECTION("several levels") { check("{1,2,3,4,5,6,7}", 3); }
 }
 
 TEST_CASE("PruebaBorrarNodoRaiz cases", "[PruebaBorrarNodoRaiz][file:arboles]")
@@ -413,6 +355,25 @@ TEST_CASE("PruebaBorrarNodoRaiz cases", "[PruebaBorrarNodoRaiz][file:arboles]")
     SECTION("big") { check("{120,53,180,33,88,130,300,15,#,66,100,#,#,#,#,#,18,#,#,#,#,#,31}", "{100,53,180,33,88,130,300,15,#,66,#,#,#,#,#,#,18,#,#,#,31}"); }
 }
 
+TEST_CASE("PruebaBorrarNodoRaiz memory cases", "[PruebaBorrarNodoRaiz][memory][file:arboles]")
+{
+    SECTION("leaf")
+    {
+        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
+                            { borrarNodoRaiz(a); }, "{1}");
+    }
+    SECTION("one child")
+    {
+        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
+                            { borrarNodoRaiz(a); }, "{1,#,2}");
+    }
+    SECTION("two children")
+    {
+        checkMemoriaArbol<NodoAB>([](NodoAB *&a)
+                            { borrarNodoRaiz(a); }, "{3,2,6}");
+    }
+}
+
 TEST_CASE("PruebaSumaABB cases", "[PruebaSumaABB][file:arboles]")
 {
     auto check = [](const char *inputTree, int n, bool expected)
@@ -434,6 +395,8 @@ TEST_CASE("PruebaSumaABB cases", "[PruebaSumaABB][file:arboles]")
     SECTION("{5,3,8,2,4,7,10,1,#,#,#,6,#,#,20},23") { check("{5,3,8,2,4,7,10,1,#,#,#,6,#,#,20}", 23, true); }
     SECTION("{5,3,8,2,4,7,10,1,#,#,#,6,#,#,20},20") { check("{5,3,8,2,4,7,10,1,#,#,#,6,#,#,20}", 20, false); }
 }
+
+MEMORY_CASES(NodoAB, "PruebaSumaABB", [](NodoAB *arbol) { (void)sumaABB(arbol, 4); }, "{}", "{1}", "{1,2,3,4,5}")
 
 TEST_CASE("PruebaSucesorABB cases", "[PruebaSucesorABB][file:arboles]")
 {
@@ -465,6 +428,8 @@ TEST_CASE("PruebaSucesorABB cases", "[PruebaSucesorABB][file:arboles]")
     SECTION("{5,2,#,1,3},5") { check("{5,2,#,1,3}", 5, -1); }
 }
 
+MEMORY_CASES(NodoAB, "PruebaSucesorABB", [](NodoAB *arbol) { (void)sucesor(arbol, 1); }, "{}", "{1}", "{1,2,3,4,5}")
+
 TEST_CASE("PruebaNivelMasNodos cases", "[PruebaNivelMasNodos][file:arboles]")
 {
     auto check = [](const char *inputTree, int nivelHasta, int expected)
@@ -484,6 +449,8 @@ TEST_CASE("PruebaNivelMasNodos cases", "[PruebaNivelMasNodos][file:arboles]")
     SECTION("complex6") { check("{1,2,3,#,#,4,6,5,11}", 3, 2); }
 }
 
+MEMORY_CASES(NodoAB, "PruebaNivelMasNodos", [](NodoAB *arbol) { (void)nivelMasNodos(arbol, 3); }, "{}", "{1}", "{1,2,3,4,5}")
+
 TEST_CASE("PruebaAlturaAG cases", "[PruebaAlturaAG][file:arboles]")
 {
     auto check = [](const char *inputTree, int expected)
@@ -499,6 +466,8 @@ TEST_CASE("PruebaAlturaAG cases", "[PruebaAlturaAG][file:arboles]")
     SECTION("{{1,2,3,4,5,#,6}}") { check("{{1,2,3,4,5,#,6}}", 5); }
     SECTION("{{1,2,3,4,#,#,#,5,6,7}}") { check("{{1,2,3,4,#,#,#,5,6,7}}", 4); }
 }
+
+MEMORY_CASES(NodoAG, "PruebaAlturaAG", [](NodoAG *arbol) { (void)alturaAG(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
 
 TEST_CASE("PruebaSumaPorNiveles cases", "[PruebaSumaPorNiveles][file:arboles]")
 {
@@ -517,6 +486,8 @@ TEST_CASE("PruebaSumaPorNiveles cases", "[PruebaSumaPorNiveles][file:arboles]")
     SECTION("{{1,-7,5,#,20,#,#,3,#,4,7,33}}") { check("{{1,-7,5,#,20,#,#,3,#,4,7,33}}", 0); }
     SECTION("{{1,-7,5,#,15,#,#,3,#,4,8,34}}") { check("{{1,-7,5,#,15,#,#,3,#,4,8,34}}", 5); }
 }
+
+MEMORY_CASES(NodoAG, "PruebaSumaPorNiveles", [](NodoAG *arbol) { (void)sumaPorNiveles(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
 
 TEST_CASE("PruebaEsPrefijo cases", "[PruebaEsPrefijo][file:arboles]")
 {
@@ -542,6 +513,21 @@ TEST_CASE("PruebaEsPrefijo cases", "[PruebaEsPrefijo][file:arboles]")
     SECTION("false-nested") { check("{{5,7,1,#,#,3,8,#,4,#,#,1,#,#,10,9,1,#,#,3,2}}", "(10,9,1,1)", false); }
 }
 
+TEST_CASE("PruebaEsPrefijo memory cases", "[PruebaEsPrefijo][memory][file:arboles]")
+{
+    auto check = [](const char *inputTree, const char *inputList)
+    {
+        int largoLista;
+        NodoLista *lista = (NodoLista *)FrameworkA1::parsearColeccion(inputList, largoLista);
+        checkMemoriaArbol<NodoAG>([&](NodoAG *a)
+                            { (void)esPrefijo(a, lista); }, inputTree);
+        FrameworkA1::destruir(lista);
+    };
+    SECTION("empty path") { check("{{1}}", "()"); }
+    SECTION("prefix") { check("{{1,2,3,#,4}}", "(1,2,4)"); }
+    SECTION("not prefix") { check("{{1,2,3,#,4}}", "(1,4)"); }
+}
+
 TEST_CASE("PruebaCaminoAG cases", "[PruebaCaminoAG][file:arboles]")
 {
     auto check = [](const char *inputTree, int dato, const char *expected)
@@ -564,6 +550,25 @@ TEST_CASE("PruebaCaminoAG cases", "[PruebaCaminoAG][file:arboles]")
     SECTION("repeat-4") { check("{{1,2,3,#,4,5,#,#,#,6,#,7,8,#,4}}", 4, "(1,2,4)"); }
 }
 
+TEST_CASE("PruebaCaminoAG memory cases", "[PruebaCaminoAG][memory][file:arboles]")
+{
+    SECTION("empty")
+    {
+        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
+                                 { return caminoAG(a, 1); }, "{{}}");
+    }
+    SECTION("root")
+    {
+        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
+                                 { return caminoAG(a, 1); }, "{{1}}");
+    }
+    SECTION("deep")
+    {
+        checkMemoriaArbolLista<NodoAG>([](NodoAG *a)
+                                 { return caminoAG(a, 4); }, "{{1,2,3,#,4}}");
+    }
+}
+
 TEST_CASE("PruebaNivelConMasNodosAG cases", "[PruebaNivelConMasNodosAG][file:arboles]")
 {
     auto check = [](const char *inputTree, int expected)
@@ -581,3 +586,7 @@ TEST_CASE("PruebaNivelConMasNodosAG cases", "[PruebaNivelConMasNodosAG][file:arb
     SECTION("{{1,2,4,#,#,3,5,11,#,12,#,13,#,14,#,15,#,#,#,6,#,7,8,#,9}}") { check("{{1,2,4,#,#,3,5,11,#,12,#,13,#,14,#,15,#,#,#,6,#,7,8,#,9}}", 4); }
     SECTION("{{1,2,4,#,#,3,5,#,#,#,6,7,#,#,8,#,9}}") { check("{{1,2,4,#,#,3,5,#,#,#,6,7,#,#,8,#,9}}", 1); }
 }
+
+MEMORY_CASES(NodoAG, "PruebaNivelConMasNodosAG", [](NodoAG *arbol) { (void)nivelConMasNodosAG(arbol); }, "{{}}", "{{1}}", "{{1,2,3,#,4}}")
+
+#undef MEMORY_CASES

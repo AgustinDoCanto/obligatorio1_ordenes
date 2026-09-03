@@ -162,3 +162,10 @@ reporte `grading`:
 ```bash
 ./build/Debug/obligatorio1.exe "[file:listas]" --reporter grading
 ```
+
+Para una salida más legible que la de consola, mostrando cada sección con su
+resultado y el detalle de los fallos, usar el reporte `readable`:
+
+```bash
+./build/Debug/obligatorio1.exe "[file:comienzo]" --reporter readable
+```

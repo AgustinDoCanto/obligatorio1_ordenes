@@ -52,107 +52,6 @@ void checkVectorIntModificado(Funcion funcion, const char *input, const std::str
     FrameworkA1::destruir(esperado);
 }
 
-TEST_CASE("PruebaOrdenarVecInt memory cases", "[PruebaOrdenarVecInt][memory][file:comienzo]")
-{
-    auto check = [](const char *input)
-    {
-        int largo;
-        int *vector = (int *)FrameworkA1::parsearColeccion(input, largo);
-        checkMemoriaEjecucion([&]
-                              { ordenarVecInt(vector, largo); });
-        FrameworkA1::destruir(vector);
-    };
-    SECTION("empty") { check("[]"); }
-    SECTION("unsorted") { check("[9,5,1]"); }
-    SECTION("duplicates") { check("[1,6,4,9,2,4,9,1]"); }
-}
-
-TEST_CASE("PruebaIntercalarVector memory cases", "[PruebaIntercalarVector][memory][file:comienzo]")
-{
-    auto check = [](const char *input1, const char *input2)
-    {
-        int largo1, largo2;
-        int *vector1 = (int *)FrameworkA1::parsearColeccion(input1, largo1);
-        int *vector2 = (int *)FrameworkA1::parsearColeccion(input2, largo2);
-        checkMemoriaEjecucion([&]
-                              {
-            int *resultado = intercalarVector(vector1, vector2, largo1, largo2);
-            FrameworkA1::destruir(resultado); });
-        FrameworkA1::destruir(vector1);
-        FrameworkA1::destruir(vector2);
-    };
-    SECTION("both empty") { check("[]", "[]"); }
-    SECTION("one empty") { check("[1,2,3]", "[]"); }
-    SECTION("interleaved") { check("[1,3,5]", "[2,4]"); }
-}
-
-TEST_CASE("PruebaSubconjuntoVector memory cases", "[PruebaSubconjuntoVector][memory][file:comienzo]")
-{
-    auto check = [](const char *input1, const char *input2)
-    {
-        int largo1, largo2;
-        int *vector1 = (int *)FrameworkA1::parsearColeccion(input1, largo1);
-        int *vector2 = (int *)FrameworkA1::parsearColeccion(input2, largo2);
-        checkMemoriaEjecucion([&]
-                              { (void)subconjuntoVector(vector1, vector2, largo1, largo2); });
-        FrameworkA1::destruir(vector1);
-        FrameworkA1::destruir(vector2);
-    };
-    SECTION("both empty") { check("[]", "[]"); }
-    SECTION("subset") { check("[1,2,3]", "[1,2,3,4]"); }
-    SECTION("not subset") { check("[1,5]", "[1,2,3]"); }
-}
-
-TEST_CASE("PruebaInvertirCase memory cases", "[PruebaInvertirCase][memory][file:comienzo]")
-{
-    auto check = [](const char *input)
-    {
-        char *copia = FrameworkA1::copioString(input);
-        checkMemoriaEjecucion([&]
-                              {
-            char *resultado = invertirCase(copia);
-            delete[] resultado; });
-        delete[] copia;
-    };
-    SECTION("empty") { check(""); }
-    SECTION("lowercase") { check("hola"); }
-    SECTION("mixed") { check("Write in C"); }
-}
-
-TEST_CASE("PruebaOcurrenciasSubstring memory cases", "[PruebaOcurrenciasSubstring][memory][file:comienzo]")
-{
-    auto check = [](const char *input, const char *substring)
-    {
-        int largo;
-        char **vector = (char **)FrameworkA1::parsearColeccion(input, largo);
-        char *sub = FrameworkA1::copioString(substring);
-        checkMemoriaEjecucion([&]
-                              { (void)ocurrenciasSubstring(vector, largo, sub); });
-        FrameworkA1::destruir(vector, largo);
-        delete[] sub;
-    };
-    SECTION("empty") { check("[]", "a"); }
-    SECTION("one match") { check("['hola']", "hola"); }
-    SECTION("several") { check("['abc','ab','ab']", "ab"); }
-}
-
-TEST_CASE("PruebaOrdenarVecStr memory cases", "[PruebaOrdenarVecStr][memory][file:comienzo]")
-{
-    auto check = [](const char *input)
-    {
-        int largo;
-        char **vector = (char **)FrameworkA1::parsearColeccion(input, largo);
-        checkMemoriaEjecucion([&]
-                              {
-            char **resultado = ordenarVecStrings(vector, largo);
-            FrameworkA1::destruir(resultado, largo); });
-        FrameworkA1::destruir(vector, largo);
-    };
-    SECTION("empty") { check("[]"); }
-    SECTION("single") { check("['hola']"); }
-    SECTION("unsorted") { check("['paso','pasa','pasado','pasaron']"); }
-}
-
 TEST_CASE("PruebaSuma cases", "[PruebaSuma][file:comienzo]")
 {
     auto checkSuma = [](int a, int b, int expected)
@@ -162,6 +61,7 @@ TEST_CASE("PruebaSuma cases", "[PruebaSuma][file:comienzo]")
     SECTION("2 + 7 = 9") { checkSuma(2, 7, 9); }
     SECTION("-8 + 6 = -2") { checkSuma(-8, 6, -2); }
 }
+
 
 TEST_CASE("PruebaTablaDel cases", "[PruebaTablaDel][file:comienzo]")
 {
@@ -257,6 +157,21 @@ TEST_CASE("PruebaOrdenarVecInt cases", "[PruebaOrdenarVecInt][file:comienzo]")
     SECTION("many-duplicates") { check("[9,9,5,5,5,1,1]", "[1,1,5,5,5,9,9]"); }
 }
 
+TEST_CASE("PruebaOrdenarVecInt memory cases", "[PruebaOrdenarVecInt][memory][file:comienzo]")
+{
+    auto check = [](const char *input)
+    {
+        int largo;
+        int *vector = (int *)FrameworkA1::parsearColeccion(input, largo);
+        checkMemoriaEjecucion([&]
+                              { ordenarVecInt(vector, largo); });
+        FrameworkA1::destruir(vector);
+    };
+    SECTION("empty") { check("[]"); }
+    SECTION("unsorted") { check("[9,5,1]"); }
+    SECTION("duplicates") { check("[1,6,4,9,2,4,9,1]"); }
+}
+
 TEST_CASE("PruebaIntercalarVector cases", "[PruebaIntercalarVector][file:comienzo]")
 {
     auto check = [](const char *v1s, const char *v2s, const std::string &expected)
@@ -330,6 +245,25 @@ TEST_CASE("PruebaIntercalarVector order", "[PruebaIntercalarVector][file:comienz
     REQUIRE(bigO.name() == "O(n)");
 }
 
+TEST_CASE("PruebaIntercalarVector memory cases", "[PruebaIntercalarVector][memory][file:comienzo]")
+{
+    auto check = [](const char *input1, const char *input2)
+    {
+        int largo1, largo2;
+        int *vector1 = (int *)FrameworkA1::parsearColeccion(input1, largo1);
+        int *vector2 = (int *)FrameworkA1::parsearColeccion(input2, largo2);
+        checkMemoriaEjecucion([&]
+                              {
+            int *resultado = intercalarVector(vector1, vector2, largo1, largo2);
+            FrameworkA1::destruir(resultado); });
+        FrameworkA1::destruir(vector1);
+        FrameworkA1::destruir(vector2);
+    };
+    SECTION("both empty") { check("[]", "[]"); }
+    SECTION("one empty") { check("[1,2,3]", "[]"); }
+    SECTION("interleaved") { check("[1,3,5]", "[2,4]"); }
+}
+
 TEST_CASE("PruebaSubconjuntoVector cases", "[PruebaSubconjuntoVector][file:comienzo]")
 {
     auto check = [](const char *v1s, const char *v2s, bool expected)
@@ -361,6 +295,23 @@ TEST_CASE("PruebaSubconjuntoVector cases", "[PruebaSubconjuntoVector][file:comie
     SECTION("sub-single") { check("[1]", "[1]", true); }
 }
 
+TEST_CASE("PruebaSubconjuntoVector memory cases", "[PruebaSubconjuntoVector][memory][file:comienzo]")
+{
+    auto check = [](const char *input1, const char *input2)
+    {
+        int largo1, largo2;
+        int *vector1 = (int *)FrameworkA1::parsearColeccion(input1, largo1);
+        int *vector2 = (int *)FrameworkA1::parsearColeccion(input2, largo2);
+        checkMemoriaEjecucion([&]
+                              { (void)subconjuntoVector(vector1, vector2, largo1, largo2); });
+        FrameworkA1::destruir(vector1);
+        FrameworkA1::destruir(vector2);
+    };
+    SECTION("both empty") { check("[]", "[]"); }
+    SECTION("subset") { check("[1,2,3]", "[1,2,3,4]"); }
+    SECTION("not subset") { check("[1,5]", "[1,2,3]"); }
+}
+
 TEST_CASE("PruebaInvertirCase cases", "[PruebaInvertirCase][file:comienzo]")
 {
     auto check = [](const char *in, const char *expected)
@@ -389,6 +340,22 @@ TEST_CASE("PruebaInvertirCase cases", "[PruebaInvertirCase][file:comienzo]")
     SECTION("symbols") { check("#&/()|A", "#&/()|a"); }
 }
 
+TEST_CASE("PruebaInvertirCase memory cases", "[PruebaInvertirCase][memory][file:comienzo]")
+{
+    auto check = [](const char *input)
+    {
+        char *copia = FrameworkA1::copioString(input);
+        checkMemoriaEjecucion([&]
+                              {
+            char *resultado = invertirCase(copia);
+            delete[] resultado; });
+        delete[] copia;
+    };
+    SECTION("empty") { check(""); }
+    SECTION("lowercase") { check("hola"); }
+    SECTION("mixed") { check("Write in C"); }
+}
+
 TEST_CASE("PruebaOcurrenciasSubstring cases", "[PruebaOcurrenciasSubstring][file:comienzo]")
 {
     auto check = [](const char *vecStr, const char *substr, int expected)
@@ -415,6 +382,23 @@ TEST_CASE("PruebaOcurrenciasSubstring cases", "[PruebaOcurrenciasSubstring][file
     SECTION("['abcjsdf','sagsdfg','afgadfg','afgadfg12','wertewrt','tyafgadfgsegfdxv','jo']") { check("['abcjsdf','sagsdfg','afgadfg','afgadfg12','wertewrt','tyafgadfgsegfdxv','jo']", "afgadfg", 3); };
     SECTION("['solsol']") { check("['solsol']", "sol", 1); };
     SECTION("['ababac','aabaca','abaabaca']") { check("['ababac','aabaca','abaabaca']", "abac", 3); };
+}
+
+TEST_CASE("PruebaOcurrenciasSubstring memory cases", "[PruebaOcurrenciasSubstring][memory][file:comienzo]")
+{
+    auto check = [](const char *input, const char *substring)
+    {
+        int largo;
+        char **vector = (char **)FrameworkA1::parsearColeccion(input, largo);
+        char *sub = FrameworkA1::copioString(substring);
+        checkMemoriaEjecucion([&]
+                              { (void)ocurrenciasSubstring(vector, largo, sub); });
+        FrameworkA1::destruir(vector, largo);
+        delete[] sub;
+    };
+    SECTION("empty") { check("[]", "a"); }
+    SECTION("one match") { check("['hola']", "hola"); }
+    SECTION("several") { check("['abc','ab','ab']", "ab"); }
 }
 
 TEST_CASE("PruebaOrdenarVecStr cases", "[PruebaOrdenarVecStr][file:comienzo]")
@@ -447,6 +431,23 @@ TEST_CASE("PruebaOrdenarVecStr cases", "[PruebaOrdenarVecStr][file:comienzo]")
     SECTION("['153243','1532468','153246','15324679']") { check("['153243','1532468','153246','15324679']", "['153243', '153246', '15324679', '1532468']"); }
     SECTION("['algoritmos','algoritmia','algoritmo','algo']") { check("['algoritmos','algoritmia','algoritmo','algo']", "['algo', 'algoritmia', 'algoritmo', 'algoritmos']"); }
     SECTION("['123456','123546','123645','123598','123754','12365498','1232','12','123','12911']") { check("['123456','123546','123645','123598','123754','12365498','1232','12','123','12911']", "['12','123', '1232', '123456', '123546','123598', '123645', '12365498', '123754', '12911']"); }
+}
+
+TEST_CASE("PruebaOrdenarVecStr memory cases", "[PruebaOrdenarVecStr][memory][file:comienzo]")
+{
+    auto check = [](const char *input)
+    {
+        int largo;
+        char **vector = (char **)FrameworkA1::parsearColeccion(input, largo);
+        checkMemoriaEjecucion([&]
+                              {
+            char **resultado = ordenarVecStrings(vector, largo);
+            FrameworkA1::destruir(resultado, largo); });
+        FrameworkA1::destruir(vector, largo);
+    };
+    SECTION("empty") { check("[]"); }
+    SECTION("single") { check("['hola']"); }
+    SECTION("unsorted") { check("['paso','pasa','pasado','pasaron']"); }
 }
 
 TEST_CASE("PruebaSplitStr cases", "[PruebaSplitStr][file:comienzo]")

@@ -6,9 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(obligatorio1
+    src/main.cpp
     src/lib/memplumber.cpp
     src/lib/catch_amalgamated.cpp
-    
+
     src/ejercicios/arboles.cpp
     src/ejercicios/listas.cpp
     src/ejercicios/comienzo.cpp
@@ -23,6 +24,7 @@ add_executable(obligatorio1
     src/pruebas/mem_tracking_fixture.cpp
 
     src/reporters/grading_reporter.cpp
+    src/reporters/readable_reporter.cpp
 )
 
 target_include_directories(obligatorio1 PRIVATE
@@ -35,6 +37,7 @@ target_include_directories(obligatorio1 PRIVATE
 
 target_compile_definitions(obligatorio1 PRIVATE
     PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+    CATCH_AMALGAMATED_CUSTOM_MAIN
 )
 
 # target_compile_options(obligatorio1 PRIVATE -fsanitize=address)

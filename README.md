@@ -150,7 +150,21 @@ Para ejecutar todas las pruebas asociadas a un archivo, usar la etiqueta `file`:
 ./build/Debug/obligatorio1.exe "[file:comienzo]"
 ```
 
-Por defecto se usa el reporte de consola. Para una salida compacta, agregar la opción `--reporter`:
+Por defecto se usa el reporte `readable`, que muestra cada sección con su
+resultado y el detalle de los fallos:
+
+```bash
+./build/Debug/obligatorio1.exe "[file:comienzo]"
+```
+
+Para usar otro reporte, agregar la opción `--reporter`. Por ejemplo, el
+reporte de consola estándar de Catch2:
+
+```bash
+./build/Debug/obligatorio1.exe --reporter console
+```
+
+o una salida compacta:
 
 ```bash
 ./build/Debug/obligatorio1.exe --reporter compact

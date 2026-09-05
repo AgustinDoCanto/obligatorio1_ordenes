@@ -229,12 +229,6 @@ void casosOrdenamiento(Check check)
     SECTION("(-2,0,3,1,1)") { check("(-2,0,3,1,1)", "(-2,0,1,1,3)"); }
 }
 
-TEST_CASE("PruebaInvertirParcial memory cases", "[PruebaInvertirParcial][memory][file:listas]")
-{
-    SECTION("single") { checkMemoriaListaNueva(invertirParcial, "(1)"); }
-    SECTION("ascending") { checkMemoriaListaNueva(invertirParcial, "(1,2,3,4)"); }
-    SECTION("repeated") { checkMemoriaListaNueva(invertirParcial, "(0,1,0,5,0,1,0)"); }
-}
 
 TEST_CASE("PruebaInvertirParcial cases", "[PruebaInvertirParcial][file:listas]")
 {
@@ -259,15 +253,11 @@ TEST_CASE("PruebaInvertirParcial cases", "[PruebaInvertirParcial][file:listas]")
     check("(8,9,5,1)", "(5,9,8)");
 }
 
-TEST_CASE("PruebaEliminarNesimoDesdeElFinal memory cases", "[PruebaEliminarNesimoDesdeElFinal][memory][file:listas]")
+TEST_CASE("PruebaInvertirParcial memory cases", "[PruebaInvertirParcial][memory][file:listas]")
 {
-    auto check = [](const char *input, int n)
-    { checkMemoriaLista([n](NodoLista *&lista) mutable
-                        { eliminarNesimoDesdeElFinal(lista, n); }, input); };
-
-    SECTION("empty") { check("()", 1); }
-    SECTION("remove head") { check("(1,2,3,4)", 4); }
-    SECTION("remove tail") { check("(1,2,3,4)", 1); }
+    SECTION("single") { checkMemoriaListaNueva(invertirParcial, "(1)"); }
+    SECTION("ascending") { checkMemoriaListaNueva(invertirParcial, "(1,2,3,4)"); }
+    SECTION("repeated") { checkMemoriaListaNueva(invertirParcial, "(0,1,0,5,0,1,0)"); }
 }
 
 TEST_CASE("PruebaEliminarNesimoDesdeElFinal cases", "[PruebaEliminarNesimoDesdeElFinal][file:listas]")
@@ -292,6 +282,23 @@ TEST_CASE("PruebaEliminarNesimoDesdeElFinal cases", "[PruebaEliminarNesimoDesdeE
     SECTION("(5, 6, 7, 8, 9) n=1") { check("(5, 6, 7, 8, 9)", 1, "(5, 6, 7, 8)"); }
 }
 
+TEST_CASE("PruebaEliminarNesimoDesdeElFinal memory cases", "[PruebaEliminarNesimoDesdeElFinal][memory][file:listas]")
+{
+    auto check = [](const char *input, int n)
+    { checkMemoriaLista([n](NodoLista *&lista) mutable
+                        { eliminarNesimoDesdeElFinal(lista, n); }, input); };
+
+    SECTION("empty") { check("()", 1); }
+    SECTION("remove head") { check("(1,2,3,4)", 4); }
+    SECTION("remove tail") { check("(1,2,3,4)", 1); }
+}
+
+TEST_CASE("PruebaListaOrdenadaInsertionSort cases", "[PruebaListaOrdenadaInsertionSort][file:listas]")
+{
+    casosOrdenamiento([](const char *input, const char *expected)
+                      { checkListaNueva(listaOrdenadaInsertionSort, input, expected); });
+}
+
 TEST_CASE("PruebaListaOrdenadaInsertionSort memory cases", "[PruebaListaOrdenadaInsertionSort][memory][file:listas]")
 {
     SECTION("empty") { checkMemoriaListaNueva(listaOrdenadaInsertionSort, "()"); }
@@ -299,10 +306,10 @@ TEST_CASE("PruebaListaOrdenadaInsertionSort memory cases", "[PruebaListaOrdenada
     SECTION("duplicates") { checkMemoriaListaNueva(listaOrdenadaInsertionSort, "(9,2,2,5,1)"); }
 }
 
-TEST_CASE("PruebaListaOrdenadaInsertionSort cases", "[PruebaListaOrdenadaInsertionSort][file:listas]")
+TEST_CASE("PruebaListaOrdenadaSelectionSort cases", "[PruebaListaOrdenadaSelectionSort][file:listas]")
 {
     casosOrdenamiento([](const char *input, const char *expected)
-                      { checkListaNueva(listaOrdenadaInsertionSort, input, expected); });
+                      { checkListaModificada(listaOrdenadaSelectionSort, input, expected); });
 }
 
 TEST_CASE("PruebaListaOrdenadaSelectionSort memory cases", "[PruebaListaOrdenadaSelectionSort][memory][file:listas]")
@@ -312,10 +319,9 @@ TEST_CASE("PruebaListaOrdenadaSelectionSort memory cases", "[PruebaListaOrdenada
     SECTION("duplicates") { checkMemoriaLista(listaOrdenadaSelectionSort, "(9,2,2,5,1)"); }
 }
 
-TEST_CASE("PruebaListaOrdenadaSelectionSort cases", "[PruebaListaOrdenadaSelectionSort][file:listas]")
+TEST_CASE("PruebaIntercalarIter cases", "[PruebaIntercalarIter][file:listas]")
 {
-    casosOrdenamiento([](const char *input, const char *expected)
-                      { checkListaModificada(listaOrdenadaSelectionSort, input, expected); });
+    casosIntercalar(intercalarIter);
 }
 
 TEST_CASE("PruebaIntercalarIter memory cases", "[PruebaIntercalarIter][memory][file:listas]")
@@ -323,30 +329,14 @@ TEST_CASE("PruebaIntercalarIter memory cases", "[PruebaIntercalarIter][memory][f
     casosMemoriaIntercalar(intercalarIter);
 }
 
-TEST_CASE("PruebaIntercalarIter cases", "[PruebaIntercalarIter][file:listas]")
-{
-    casosIntercalar(intercalarIter);
-}
-
-TEST_CASE("PruebaIntercalarRec memory cases", "[PruebaIntercalarRec][memory][file:listas]")
-{
-    casosMemoriaIntercalar(intercalarRec);
-}
-
 TEST_CASE("PruebaIntercalarRec cases", "[PruebaIntercalarRec][file:listas]")
 {
     casosIntercalar(intercalarRec);
 }
 
-TEST_CASE("PruebaInsComFin memory cases", "[PruebaInsComFin][memory][file:listas]")
+TEST_CASE("PruebaIntercalarRec memory cases", "[PruebaIntercalarRec][memory][file:listas]")
 {
-    auto check = [](const char *input, int n)
-    { checkMemoriaListaNueva([n](NodoLista *lista)
-                             { return insComFin(lista, n); }, input); };
-
-    SECTION("empty") { check("()", 4); }
-    SECTION("single") { check("(5)", 4); }
-    SECTION("several") { check("(1,2,3,4)", 5); }
+    casosMemoriaIntercalar(intercalarRec);
 }
 
 TEST_CASE("PruebaInsComFin cases", "[PruebaInsComFin][file:listas]")
@@ -367,11 +357,15 @@ TEST_CASE("PruebaInsComFin cases", "[PruebaInsComFin][file:listas]")
     SECTION("(9,5,1,7,5,3) x=1000") { check("(9,5,1,7,5,3)", 1000, "(1000,3,5,7,1,5,9,1000)"); }
 }
 
-TEST_CASE("PruebaEXOR memory cases", "[PruebaEXOR][memory][file:listas]")
+TEST_CASE("PruebaInsComFin memory cases", "[PruebaInsComFin][memory][file:listas]")
 {
-    SECTION("both empty") { checkMemoriaDosListas(exor, "()", "()"); }
-    SECTION("equal") { checkMemoriaDosListas(exor, "(1,2,3)", "(1,2,3)"); }
-    SECTION("overlap") { checkMemoriaDosListas(exor, "(1,2,3,4)", "(2,3,5,7)"); }
+    auto check = [](const char *input, int n)
+    { checkMemoriaListaNueva([n](NodoLista *lista)
+                             { return insComFin(lista, n); }, input); };
+
+    SECTION("empty") { check("()", 4); }
+    SECTION("single") { check("(5)", 4); }
+    SECTION("several") { check("(1,2,3,4)", 5); }
 }
 
 TEST_CASE("PruebaEXOR cases", "[PruebaEXOR][file:listas]")
@@ -394,11 +388,11 @@ TEST_CASE("PruebaEXOR cases", "[PruebaEXOR][file:listas]")
     SECTION("(-1,1,2,5,5) xor (2,3,3,5)") { check("(-1,1,2,5,5)", "(2,3,3,5)", "(-1,1,3)"); }
 }
 
-TEST_CASE("PruebaEliminarDuplicadosListaOrdenadaDos memory cases", "[PruebaEliminarDuplicadosListaOrdenadaDos][memory][file:listas]")
+TEST_CASE("PruebaEXOR memory cases", "[PruebaEXOR][memory][file:listas]")
 {
-    SECTION("empty") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "()"); }
-    SECTION("all duplicated") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "(1,1,2,2)"); }
-    SECTION("mixed") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "(-1,0,1,1,1,5,5)"); }
+    SECTION("both empty") { checkMemoriaDosListas(exor, "()", "()"); }
+    SECTION("equal") { checkMemoriaDosListas(exor, "(1,2,3)", "(1,2,3)"); }
+    SECTION("overlap") { checkMemoriaDosListas(exor, "(1,2,3,4)", "(2,3,5,7)"); }
 }
 
 TEST_CASE("PruebaEliminarDuplicadosListaOrdenadaDos cases", "[PruebaEliminarDuplicadosListaOrdenadaDos][file:listas]")
@@ -418,11 +412,11 @@ TEST_CASE("PruebaEliminarDuplicadosListaOrdenadaDos cases", "[PruebaEliminarDupl
     SECTION("(0,1,1,2,2,2,3,3,3,3,4,4,4,4,4)") { check("(0,1,1,2,2,2,3,3,3,3,4,4,4,4,4)", "(0)"); }
 }
 
-TEST_CASE("PruebaPalindromo memory cases", "[PruebaPalindromo][memory][file:listas]")
+TEST_CASE("PruebaEliminarDuplicadosListaOrdenadaDos memory cases", "[PruebaEliminarDuplicadosListaOrdenadaDos][memory][file:listas]")
 {
-    SECTION("empty") { checkMemoriaLista(palindromo, "()"); }
-    SECTION("palindrome") { checkMemoriaLista(palindromo, "(1,2,3,2,1)"); }
-    SECTION("not palindrome") { checkMemoriaLista(palindromo, "(1,2,3)"); }
+    SECTION("empty") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "()"); }
+    SECTION("all duplicated") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "(1,1,2,2)"); }
+    SECTION("mixed") { checkMemoriaLista(eliminarDuplicadosListaOrdenadaDos, "(-1,0,1,1,1,5,5)"); }
 }
 
 TEST_CASE("PruebaPalindromo cases", "[PruebaPalindromo][file:listas]")
@@ -443,11 +437,11 @@ TEST_CASE("PruebaPalindromo cases", "[PruebaPalindromo][file:listas]")
     SECTION("(1,1,1,1,1,1,1)") { check("(1,1,1,1,1,1,1)", true); }
 }
 
-TEST_CASE("PruebaEliminarSecuencia memory cases", "[PruebaEliminarSecuencia][memory][file:listas]")
+TEST_CASE("PruebaPalindromo memory cases", "[PruebaPalindromo][memory][file:listas]")
 {
-    SECTION("both empty") { checkMemoriaListaConSecuencia(eliminarSecuencia, "()", "()"); }
-    SECTION("at start") { checkMemoriaListaConSecuencia(eliminarSecuencia, "(1,2,3,4)", "(1,2)"); }
-    SECTION("in middle") { checkMemoriaListaConSecuencia(eliminarSecuencia, "(1,2,3,4,5)", "(2,3,4)"); }
+    SECTION("empty") { checkMemoriaLista(palindromo, "()"); }
+    SECTION("palindrome") { checkMemoriaLista(palindromo, "(1,2,3,2,1)"); }
+    SECTION("not palindrome") { checkMemoriaLista(palindromo, "(1,2,3)"); }
 }
 
 TEST_CASE("PruebaEliminarSecuencia cases", "[PruebaEliminarSecuencia][file:listas]")
@@ -467,15 +461,11 @@ TEST_CASE("PruebaEliminarSecuencia cases", "[PruebaEliminarSecuencia][file:lista
     SECTION("(4,3,2,1,4,3,2,1) remove (4,3,2,1,0)") { check("(4,3,2,1,4,3,2,1)", "(4,3,2,1,0)", "(4,3,2,1,4,3,2,1)"); }
 }
 
-TEST_CASE("PruebaMoverNodo memory cases", "[PruebaMoverNodo][memory][file:listas]")
+TEST_CASE("PruebaEliminarSecuencia memory cases", "[PruebaEliminarSecuencia][memory][file:listas]")
 {
-    auto check = [](const char *input, unsigned int inicial, unsigned int final)
-    { checkMemoriaLista([=](NodoLista *&lista)
-                        { moverNodo(lista, inicial, final); }, input); };
-
-    SECTION("forward") { check("(1,2,3,4,5)", 1, 5); }
-    SECTION("backward") { check("(1,2,3,4,5)", 5, 1); }
-    SECTION("invalid") { check("(1,2,3,4,5)", 8, 2); }
+    SECTION("both empty") { checkMemoriaListaConSecuencia(eliminarSecuencia, "()", "()"); }
+    SECTION("at start") { checkMemoriaListaConSecuencia(eliminarSecuencia, "(1,2,3,4)", "(1,2)"); }
+    SECTION("in middle") { checkMemoriaListaConSecuencia(eliminarSecuencia, "(1,2,3,4,5)", "(2,3,4)"); }
 }
 
 TEST_CASE("PruebaMoverNodo cases", "[PruebaMoverNodo][file:listas]")
@@ -497,3 +487,15 @@ TEST_CASE("PruebaMoverNodo cases", "[PruebaMoverNodo][file:listas]")
     SECTION("move 0->10 invalid") { check("(1,2,3,4,5,6,7,8,9,0)", 0, 10, "(1,2,3,4,5,6,7,8,9,0)"); }
     SECTION("move 10->0 invalid") { check("(1,2,3,4,5,6,7,8,9,0)", 10, 0, "(1,2,3,4,5,6,7,8,9,0)"); }
 }
+
+TEST_CASE("PruebaMoverNodo memory cases", "[PruebaMoverNodo][memory][file:listas]")
+{
+    auto check = [](const char *input, unsigned int inicial, unsigned int final)
+    { checkMemoriaLista([=](NodoLista *&lista)
+                        { moverNodo(lista, inicial, final); }, input); };
+
+    SECTION("forward") { check("(1,2,3,4,5)", 1, 5); }
+    SECTION("backward") { check("(1,2,3,4,5)", 5, 1); }
+    SECTION("invalid") { check("(1,2,3,4,5)", 8, 2); }
+}
+

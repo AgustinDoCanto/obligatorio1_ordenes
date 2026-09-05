@@ -38,6 +38,7 @@ target_include_directories(obligatorio1 PRIVATE
 target_compile_definitions(obligatorio1 PRIVATE
     PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
     CATCH_AMALGAMATED_CUSTOM_MAIN
+    CATCH_CONFIG_DEFAULT_REPORTER="readable"
 )
 
 # target_compile_options(obligatorio1 PRIVATE -fsanitize=address)

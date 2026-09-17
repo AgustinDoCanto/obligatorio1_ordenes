@@ -11,7 +11,10 @@ void checkArbolValor(Funcion funcion, const char *inputTree, Esperado expected)
     int largo;
     Type *arbol = static_cast<Type *>(FrameworkA1::parsearColeccion(inputTree, largo));
     auto resultado = funcion(arbol);
-    CHECK(resultado == expected);
+    if (resultado != expected)
+        FAIL_CHECK("Esperado: " << std::boolalpha << expected << " -- Recibido: " << std::boolalpha << resultado);
+    else
+        CHECK(true);
     FrameworkA1::destruir(arbol);
 }
 
@@ -56,7 +59,11 @@ void checkDosArbolesValor(Funcion funcion, const char *inputA, const char *input
     int largoA, largoB;
     Nodo *a = static_cast<Nodo *>(FrameworkA1::parsearColeccion(inputA, largoA));
     Nodo *b = static_cast<Nodo *>(FrameworkA1::parsearColeccion(inputB, largoB));
-    CHECK(funcion(a, b) == expected);
+    auto resultado = funcion(a, b);
+    if (resultado != expected)
+        FAIL_CHECK("Esperado: " << std::boolalpha << expected << " -- Recibido: " << std::boolalpha << resultado);
+    else
+        CHECK(true);
     FrameworkA1::destruir(a);
     FrameworkA1::destruir(b);
 }
@@ -78,7 +85,11 @@ void checkArbolListaValor(Funcion funcion, const char *inputTree, const char *in
     int largoTree, largoList;
     Nodo *arbol = static_cast<Nodo *>(FrameworkA1::parsearColeccion(inputTree, largoTree));
     NodoLista *lista = static_cast<NodoLista *>(FrameworkA1::parsearColeccion(inputList, largoList));
-    CHECK(funcion(arbol, lista) == expected);
+    auto resultado = funcion(arbol, lista);
+    if (resultado != expected)
+        FAIL_CHECK("Esperado: " << std::boolalpha << expected << " -- Recibido: " << std::boolalpha << resultado);
+    else
+        CHECK(true);
     FrameworkA1::destruir(arbol);
     FrameworkA1::destruir(lista);
 }
@@ -405,7 +416,11 @@ TEST_CASE("PruebaSucesorABB cases", "[PruebaSucesorABB][file:arboles]")
         int largo;
         NodoAB *arbol = (NodoAB *)FrameworkA1::parsearColeccion(inputTree, largo);
         NodoAB *copiaArbol = (NodoAB *)FrameworkA1::parsearColeccion(inputTree, largo);
-        CHECK(sucesor(arbol, n) == expected);
+        int resultado = sucesor(arbol, n);
+        if (resultado != expected)
+            FAIL_CHECK("Esperado: " << expected << " -- Recibido: " << resultado);
+        else
+            CHECK(true);
 
         if (!FrameworkA1::sonIgualesDatosForma(arbol, copiaArbol))
             FAIL_CHECK("La función modifica el parámetro de entrada");

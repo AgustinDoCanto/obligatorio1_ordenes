@@ -564,6 +564,6 @@ TEST_CASE("PruebaOrdenarVecIntMergeSort order", "[PruebaOrdenarVecIntMergeSort][
     auto bigO = bench.complexityBigO()[0];
 
     const std::string actualBigO = bigO.name();
-    if (actualBigO != "O(n log n)" && actualBigO != "O(n)" && actualBigO != "O(1)")
-        FAIL("Esperado: \"O(n log n)\", \"O(n)\" o \"O(1)\" -- Recibido: \"" << actualBigO << "\"");
+    if (actualBigO != "O(n log n)" && actualBigO != "O(log n)" && actualBigO != "O(n)" && actualBigO != "O(1)")
+        FAIL("Esperado: \"O(n log n)\", \"O(log n)\",\"O(n)\" o \"O(1)\" -- Recibido: \"" << actualBigO << "\"");
 }

@@ -9,6 +9,7 @@ namespace {
 
 struct FailureDetail {
     std::string location;
+    std::string sectionPath;
     std::string expression;
     std::string expandedExpression;
     std::string message;
@@ -55,6 +56,16 @@ public:
         FailureDetail detail;
         detail.location = std::string(result.getSourceInfo().file) + ":" +
                            std::to_string(result.getSourceInfo().line);
+
+        // Catch2 no registra el nombre de la funcion C++ donde ocurre el
+        // assert; lo mas cercano es la cadena de SECTION anidadas (la
+        // primera, de profundidad 1, coincide con el nombre del TEST_CASE).
+        for (std::size_t i = 1; i < m_sectionStack.size(); ++i) {
+            if (!detail.sectionPath.empty()) {
+                detail.sectionPath += " > ";
+            }
+            detail.sectionPath += m_sectionStack[i].name;
+        }
 
         // Las excepciones no capturadas (p. ej. NoImplementado) generan una
         // assertion sintetica sin macro real ni expresion utilizable.
@@ -153,6 +164,15 @@ private:
                 m_stream << failure.location;
             }
             m_stream << "\n";
+
+            if (!failure.sectionPath.empty()) {
+                m_stream << "    Seccion: ";
+                {
+                    auto guard = m_colour->guardColour(Catch::Colour::FileName).engage(m_stream);
+                    m_stream << failure.sectionPath;
+                }
+                m_stream << "\n";
+            }
 
             if (failure.hasExpression) {
                 m_stream << "    Expresion: ";

@@ -112,7 +112,10 @@ void checkPredicadoLista(Funcion funcion, const char *inputLista, bool expected)
 
     bool resultado = funcion(lista);
     bool parametrosNoModificados = FrameworkA1::sonIgualesDatosForma(lista, copiaLista);
-    CHECK(resultado == expected);
+    if (resultado != expected)
+        FAIL_CHECK("Esperado: " << std::boolalpha << expected << " -- Recibido: " << std::boolalpha << resultado);
+    else
+        CHECK(true);
     CHECK(parametrosNoModificados);
 
     FrameworkA1::destruir(lista);

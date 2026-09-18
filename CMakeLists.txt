@@ -41,5 +41,7 @@ target_compile_definitions(obligatorio1 PRIVATE
     CATCH_CONFIG_DEFAULT_REPORTER="readable"
 )
 
+target_compile_options(obligatorio1 PRIVATE -O0)
+
 # target_compile_options(obligatorio1 PRIVATE -fsanitize=address)
 # target_link_options(obligatorio1 PRIVATE -fsanitize=address)

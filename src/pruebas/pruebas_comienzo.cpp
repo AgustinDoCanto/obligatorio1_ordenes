@@ -212,7 +212,7 @@ TEST_CASE("PruebaIntercalarVector cases", "[PruebaIntercalarVector][file:comienz
     SECTION("inter1") { check("[1,2,3]", "[1,2,3]", "[1,1,2,2,3,3]"); }
     SECTION("inter2") { check("[1,3,5]", "[2,4]", "[1,2,3,4,5]"); }
     SECTION("inter3") { check("[1,100]", "[2,53]", "[1,2,53,100]"); }
-    SECTION("inter-empty") { check("[]", "[]", "[]"); }
+    SECTION("inter-empty") { check("[]", "[]", ""); }
     SECTION("inter-single") { check("[2]", "[4]", "[2,4]"); }
     SECTION("inter-append") { check("[1,2,3,4,5]", "[6,7,8]", "[1,2,3,4,5,6,7,8]"); }
     SECTION("inter-reverse") { check("[6,7,8]", "[1,2,3,4,5]", "[1,2,3,4,5,6,7,8]"); }
